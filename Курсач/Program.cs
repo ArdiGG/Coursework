@@ -10,6 +10,7 @@ namespace HelloApp // объявление нового пространства
     {
         static void Main(string[] args) // объявление нового метода
         {
+            // Підключення української мови
             Console.OutputEncoding = System.Text.Encoding.Default;
 
             for (; ; )
@@ -54,6 +55,11 @@ namespace HelloApp // объявление нового пространства
             }
         }
 
+        /// <summary>
+        /// Метод перетворення фамілії в родовий відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
         public static List<string> GenitiveSurname(List<string> surnames)
         {
             List<string> genSur = new List<string>();
@@ -67,6 +73,95 @@ namespace HelloApp // объявление нового пространства
             return new List<string>();
         }
 
+        /// <summary>
+        /// Метод перетворення імені в родовий відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
+        public static List<string> GenitiveName(List<string> surnames)
+        {
+            List<string> genSur = new List<string>();
+
+            for (int i = 0; i < surnames.Count; i++)
+            {
+
+            }
+
+
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Метод перетворення по батькові в родовий відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
+        public static List<string> GenitiveMiddleName(List<string> surnames)
+        {
+            List<string> genSur = new List<string>();
+
+            for (int i = 0; i < surnames.Count; i++)
+            {
+
+            }
+
+
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Метод перетворення фамілії в давальний відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
+        public static List<string> DativeSurname(List<string> surnames)
+        {
+            List<string> genSur = new List<string>();
+
+            for (int i = 0; i < surnames.Count; i++)
+            {
+
+            }
+
+
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Метод перетворення імені в давальний відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
+        public static List<string> DativeName(List<string> surnames)
+        {
+            List<string> genSur = new List<string>();
+
+            for (int i = 0; i < surnames.Count; i++)
+            {
+
+            }
+
+
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Метод перетворення імені в давальний відмінок
+        /// </summary>
+        /// <param name="surnames"></param>
+        /// <returns></returns>
+        public static List<string> DativeMIddleName(List<string> surnames)
+        {
+            List<string> genSur = new List<string>();
+
+            for (int i = 0; i < surnames.Count; i++)
+            {
+
+            }
+
+
+            return new List<string>();
+        }
     } 
 } 
 
