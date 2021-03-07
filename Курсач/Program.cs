@@ -48,7 +48,13 @@ namespace HelloApp // объявление нового пространства
                     Everything.Add(fio);
                 }
 
-                
+                Console.WriteLine();
+                List<string> genMIddleName = DativeMiddleName(listOfMiddleName);
+
+                foreach (var elem in genMIddleName)
+                {
+                    Console.WriteLine(elem);   
+                }
 
 
                 Console.ReadKey();
@@ -76,6 +82,7 @@ namespace HelloApp // объявление нового пространства
         /// <summary>
         /// Метод перетворення імені в родовий відмінок
         /// </summary>
+        /// 
         /// <param name="surnames"></param>
         /// <returns></returns>
         public static List<string> GenitiveName(List<string> surnames)
@@ -96,17 +103,25 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> GenitiveMiddleName(List<string> surnames)
+        public static List<string> GenitiveMiddleName(List<string> middleName)
         {
-            List<string> genSur = new List<string>();
 
-            for (int i = 0; i < surnames.Count; i++)
+            for (int i = 0; i < middleName.Count; i++)
             {
+                if (middleName[i].EndsWith("ч"))
+                {
+                    middleName[i] += "а";
+                }
+                else
+                {
+                    char[] charMidName = middleName[i].ToCharArray();
+                    charMidName[charMidName.Length - 1] = 'и';
+                    middleName[i] = new string(charMidName);
+                }
 
             }
 
-
-            return new List<string>();
+            return middleName;
         }
 
         /// <summary>
@@ -128,21 +143,28 @@ namespace HelloApp // объявление нового пространства
         }
 
         /// <summary>
-        /// Метод перетворення імені в давальний відмінок
+        /// Метод перетворення по батькові в давальний відмінок
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> DativeName(List<string> surnames)
+        public static List<string> DativeMiddleName(List<string> middleName)
         {
-            List<string> genSur = new List<string>();
-
-            for (int i = 0; i < surnames.Count; i++)
+            for (int i = 0; i < middleName.Count; i++)
             {
+                if (middleName[i].EndsWith("ч"))
+                {
+                    middleName[i] += "у";
+                }
+                else
+                {
 
+                    char[] charMidName = middleName[i].ToCharArray();
+                    charMidName[charMidName.Length - 1] = 'і';
+                    middleName[i] = new string(charMidName);
+                }
             }
 
-
-            return new List<string>();
+            return middleName;
         }
 
         /// <summary>
@@ -150,11 +172,11 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> DativeMIddleName(List<string> surnames)
+        public static List<string> DativeName(List<string> names)
         {
             List<string> genSur = new List<string>();
 
-            for (int i = 0; i < surnames.Count; i++)
+            for (int i = 0; i < names.Count; i++)
             {
 
             }
