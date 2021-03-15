@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arkad\\source\\repos\\Курсач\\Курсач\\Курсач.csproj": {}
+    "C:\\Users\\arkad\\source\\repos\\Sem3\\Курсач\\Курсач\\Курсач.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arkad\\source\\repos\\Курсач\\Курсач\\Курсач.csproj": {
+    "C:\\Users\\arkad\\source\\repos\\Sem3\\Курсач\\Курсач\\Курсач.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arkad\\source\\repos\\Курсач\\Курсач\\Курсач.csproj",
+        "projectUniqueName": "C:\\Users\\arkad\\source\\repos\\Sem3\\Курсач\\Курсач\\Курсач.csproj",
         "projectName": "Курсач",
-        "projectPath": "C:\\Users\\arkad\\source\\repos\\Курсач\\Курсач\\Курсач.csproj",
+        "projectPath": "C:\\Users\\arkad\\source\\repos\\Sem3\\Курсач\\Курсач\\Курсач.csproj",
         "packagesPath": "C:\\Users\\arkad\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arkad\\source\\repos\\Курсач\\Курсач\\obj\\",
+        "outputPath": "C:\\Users\\arkad\\source\\repos\\Sem3\\Курсач\\Курсач\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\arkad\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -54,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

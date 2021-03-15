@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Text;
 
@@ -8,14 +9,15 @@ namespace HelloApp // объявление нового пространства
 {
     class Program   // объявление нового класса
     {
+        static List<string> sex;
         static void Main(string[] args) // объявление нового метода
         {
             // Підключення української мови
             Console.OutputEncoding = System.Text.Encoding.Default;
-
             for (; ; )
             {
-                Console.Write("Введіть назву файлу який містить перелік ФІО людей: ");
+                sex = new List<string>();
+                Console.Write("\n\nВведіть назву файлу який містить перелік ФІО людей: ");
                 string fileName = Console.ReadLine();
 
                 List<string> listOfSurname = new List<string>();
@@ -24,7 +26,7 @@ namespace HelloApp // объявление нового пространства
 
                 try
                 {
-                    using (StreamReader sr = new StreamReader(fileName,Encoding.Default))
+                    using (StreamReader sr = new StreamReader(fileName, Encoding.Default))
                     {
                         string line;
                         while ((line = sr.ReadLine()) != null)
@@ -41,19 +43,25 @@ namespace HelloApp // объявление нового пространства
                     Console.WriteLine("Такого файлу не існує");
                 }
 
+                /*
                 List<string> Everything = new List<string>();
                 for (int i = 0; i < listOfNames.Count; i++)
                 {
                     string fio = listOfSurname[i] + " " + listOfNames[i] + " " + listOfMiddleName[i];
                     Everything.Add(fio);
                 }
+                */
 
-                Console.WriteLine();
-                List<string> genMIddleName = DativeMiddleName(listOfMiddleName);
+                List<string> datMIddleName = DativeMiddleName(listOfMiddleName);
+                
+                List<string> genMiddleName = GenitiveMiddleName(listOfMiddleName);
+                List<string> genSurname = GenitiveSurname(listOfSurname);
+                List<string> datSurname = DativeSurname(listOfSurname);
 
-                foreach (var elem in genMIddleName)
+                for (int i = 0; i < datSurname.Count; i++)
                 {
-                    Console.WriteLine(elem);   
+                    Console.WriteLine($"\n{datSurname[i]} {datMIddleName[i]}");
+                    Console.WriteLine($"{genSurname[i]} {genMiddleName[i]}\n");
                 }
 
 
@@ -66,17 +74,44 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> GenitiveSurname(List<string> surnames)
+        public static List<string> GenitiveSurname(List<string> sur)
         {
-            List<string> genSur = new List<string>();
+            List<string> surnames = new List<string>();
+            foreach (string elem in sur)
+            {
+                surnames.Add(elem);
+            }
 
             for (int i = 0; i < surnames.Count; i++)
             {
+                if (surnames[i].EndsWith("о") && sex[i].Equals("м"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "а";
+                }
+                else if ((surnames[i].EndsWith("ов") || surnames[i].EndsWith("ів") ||
+                         surnames[i].EndsWith("ев") || surnames[i].EndsWith("єв") || surnames[i].EndsWith("їв") ||
+                         surnames[i].EndsWith("ин") || surnames[i].EndsWith("ін") ||
+                         surnames[i].EndsWith("їн")) && sex[i].Equals("м"))
+                {
 
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "а";
+                }
+                else if (surnames[i].EndsWith("ий"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 2);
+                    surnames[i] += "ого";
+                }
+                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "ої";
+                }
             }
 
 
-            return new List<string>();
+            return surnames;
         }
 
         /// <summary>
@@ -85,13 +120,30 @@ namespace HelloApp // объявление нового пространства
         /// 
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> GenitiveName(List<string> surnames)
+        public static List<string> GenitiveName(List<string> name)
         {
-            List<string> genSur = new List<string>();
-
-            for (int i = 0; i < surnames.Count; i++)
+            List<string> names = name;
+            foreach (string elem in name)
             {
+                names.Add(elem);
+            }
 
+            for (int i = 0; i < names.Count; i++)
+            {
+                if (sex[i].Equals("м"))
+                {
+
+
+
+
+                }
+                else if (sex[i].Equals("ж"))
+                {
+
+
+
+
+                }
             }
 
 
@@ -103,8 +155,13 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> GenitiveMiddleName(List<string> middleName)
+        public static List<string> GenitiveMiddleName(List<string> mid)
         {
+            List<string> middleName = new List<string>();
+            foreach (string elem in mid)
+            {
+                middleName.Add(elem);
+            }
 
             for (int i = 0; i < middleName.Count; i++)
             {
@@ -114,9 +171,9 @@ namespace HelloApp // объявление нового пространства
                 }
                 else
                 {
-                    char[] charMidName = middleName[i].ToCharArray();
-                    charMidName[charMidName.Length - 1] = 'и';
-                    middleName[i] = new string(charMidName);
+                    middleName[i] = middleName[i].Substring(0, middleName[i].Length - 1);
+                    middleName[i] += "и";
+
                 }
 
             }
@@ -129,17 +186,35 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> DativeSurname(List<string> surnames)
+        public static List<string> DativeSurname(List<string> sur)
         {
-            List<string> genSur = new List<string>();
+            List<string> surnames = new List<string>();
+            foreach (string elem in sur)
+            {
+                surnames.Add(elem);
+            }
 
             for (int i = 0; i < surnames.Count; i++)
             {
-
+                if ((surnames[i].EndsWith("о") || surnames[i].EndsWith("ов") || surnames[i].EndsWith("ів") || surnames[i].EndsWith("ев") || surnames[i].EndsWith("єв") || surnames[i].EndsWith("їв") || surnames[i].EndsWith("ин") || surnames[i].EndsWith("ін") || surnames[i].EndsWith("їн")) && sex[i].Equals("м"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "у";
+                }
+                else if (surnames[i].EndsWith("ий"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 2);
+                    surnames[i] += "ому";
+                }
+                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "ій";
+                }
             }
 
 
-            return new List<string>();
+            return surnames;
         }
 
         /// <summary>
@@ -147,20 +222,27 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> DativeMiddleName(List<string> middleName)
+        public static List<string> DativeMiddleName(List<string> mid)
         {
+            List<string> middleName = new List<string>();
+
+            foreach (string elem in mid)
+            {
+                middleName.Add(elem);
+            }
+
             for (int i = 0; i < middleName.Count; i++)
             {
                 if (middleName[i].EndsWith("ч"))
                 {
+                    sex.Add("м");
                     middleName[i] += "у";
                 }
                 else
                 {
-
-                    char[] charMidName = middleName[i].ToCharArray();
-                    charMidName[charMidName.Length - 1] = 'і';
-                    middleName[i] = new string(charMidName);
+                    sex.Add("ж");
+                    middleName[i] = middleName[i].Substring(0, middleName[i].Length - 1);
+                    middleName[i] += "і";
                 }
             }
 
@@ -172,19 +254,56 @@ namespace HelloApp // объявление нового пространства
         /// </summary>
         /// <param name="surnames"></param>
         /// <returns></returns>
-        public static List<string> DativeName(List<string> names)
+        public static List<string> DativeName(List<string> name)
         {
-            List<string> genSur = new List<string>();
+            List<string> names = name;
+            foreach (string elem in name)
+            {
+                names.Add(elem);
+            }
 
             for (int i = 0; i < names.Count; i++)
             {
+                if (sex[i].Equals("м"))
+                {
 
+
+
+
+                }
+                else if(sex[i].Equals("ж"))
+                {
+
+
+                    if (true) { }
+                    else if (names[i].EndsWith("ля"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
+
+                    }
+                    else if (names[i].EndsWith("я"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        
+                        names[i] += "ї";
+                    }
+                    else if(names[i].EndsWith("а"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
+                    }
+                    else
+                    {
+                        names[i] += "і";
+                    }
+                }
             }
 
 
-            return new List<string>();
+            return names;
         }
-    } 
-} 
+    }
+}
 
 
