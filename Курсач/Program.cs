@@ -133,21 +133,82 @@ namespace HelloApp // объявление нового пространства
                 if (sex[i].Equals("м"))
                 {
 
+                    if (names[i].EndsWith("р"))
+                    {
+                        if (names[i].Substring(0, names[i].Length - 1).EndsWith("і"))
+                        {
+                            string temp = names[i].Substring(names[i].Length - 1, names[i].Length);
+                            names[i] = names[i].Substring(0, names[i].Length - 1);
+                            names[i] += ("о" + temp);
+                        }
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        if (names[i].Equals("Ігор"))
+                        {
+                            names[i] += "я";
+                        }
+                        else
+                        {
+                            names[i] += "а";
+                        }
 
-
+                    } else if (names[i].EndsWith("я"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
+                    }
+                    else if (names[i].EndsWith("й") || names[i].EndsWith("ь"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "я";
+                    }
+                    else if (names[i].EndsWith("о"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "а";
+                    }
+                    else
+                    {
+                        if (names[i].Substring(0, names[i].Length - 1).EndsWith("і"))
+                        {
+                            string temp = names[i].Substring(names[i].Length - 1, names[i].Length);
+                            names[i] = names[i].Substring(0, names[i].Length - 1);
+                            names[i] += ("о" + temp);
+                        }
+                        names[i] += "а";
+                    }
 
                 }
                 else if (sex[i].Equals("ж"))
                 {
 
+                    if (names[i].EndsWith("ля"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
 
+                    }
+                    else if (names[i].EndsWith("я"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+
+                        names[i] += "ї";
+                    }
+                    else if (names[i].EndsWith("а"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "и";
+                    }
+                    else
+                    {
+                        names[i] += "і";
+                    }
 
 
                 }
             }
 
 
-            return new List<string>();
+            return names;
         }
 
         /// <summary>
@@ -266,21 +327,56 @@ namespace HelloApp // объявление нового пространства
             {
                 if (sex[i].Equals("м"))
                 {
-
+                    if (names[i].EndsWith("я"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
+                    }
+                    else if (names[i].EndsWith("й") || names[i].EndsWith("ь"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "ю";
+                    }
+                    else if(names[i].EndsWith("о"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "у";
+                    }
+                    else
+                    {
+                        if (names[i].Substring(0, names[i].Length - 1).EndsWith("і"))
+                        {
+                            string temp = names[i].Substring(names[i].Length - 1, names[i].Length);
+                            names[i] = names[i].Substring(0, names[i].Length - 1);
+                            names[i] += ("о"+temp);
+                        }
+                        names[i] += "а";
+                    }
 
 
 
                 }
                 else if(sex[i].Equals("ж"))
                 {
-
-
-                    if (true) { }
+                    if (names[i].EndsWith("ха"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 2);
+                        names[i] += "сі";
+                    }
+                    else if (names[i].EndsWith("ка"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 2);
+                        names[i] += "ці";
+                    }
+                    else if (names[i].EndsWith("га"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 2);
+                        names[i] += "";
+                    }
                     else if (names[i].EndsWith("ля"))
                     {
                         names[i] = names[i].Substring(0, names[i].Length - 1);
                         names[i] += "і";
-
                     }
                     else if (names[i].EndsWith("я"))
                     {
