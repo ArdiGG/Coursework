@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Text;
+using Declension;
 
 
 namespace HelloApp // объявление нового пространства имен
@@ -17,7 +18,7 @@ namespace HelloApp // объявление нового пространства
             for (; ; )
             {
                 sex = new List<string>();
-                Console.Write("\n\nВведіть назву файлу який містить перелік ФІО людей: ");
+                Console.Write("\n\nВведіть назву файлу який містить перелік ПІБ людей: ");
                 string fileName = Console.ReadLine();
 
                 List<string> listOfSurname = new List<string>();
@@ -37,82 +38,52 @@ namespace HelloApp // объявление нового пространства
                             listOfMiddleName.Add(lineFio[2]);
                         }
                     }
-                }
-                catch
+                }catch (FileNotFoundException e)
                 {
-                    Console.WriteLine("Такого файлу не існує");
-                }
-
-                /*
-                List<string> Everything = new List<string>();
-                for (int i = 0; i < listOfNames.Count; i++)
+                    Console.WriteLine("Некоректна назва файлу або такого файлу не існує");
+                    continue;
+                } catch(Exception e)
                 {
-                    string fio = listOfSurname[i] + " " + listOfNames[i] + " " + listOfMiddleName[i];
-                    Everything.Add(fio);
+                    Console.WriteLine("Файл містить помилку");
                 }
-                */
 
                 List<string> datMIddleName = DativeMiddleName(listOfMiddleName);
-                
                 List<string> genMiddleName = GenitiveMiddleName(listOfMiddleName);
-                List<string> genSurname = GenitiveSurname(listOfSurname);
+                List<string> genSurname = GenitiveSur.GenitiveSurname(listOfSurname,sex);
                 List<string> datSurname = DativeSurname(listOfSurname);
+                List<string> datName = DativeName(listOfNames);
+                List<string> genName = GenitiveName(listOfNames);
+
+
+                string genitiveRes = "";
+                string dativeRes = "";
 
                 for (int i = 0; i < datSurname.Count; i++)
                 {
-                    Console.WriteLine($"\n{datSurname[i]} {datMIddleName[i]}");
-                    Console.WriteLine($"{genSurname[i]} {genMiddleName[i]}\n");
+                    dativeRes += $"{datSurname[i]} {datName[i]} {datMIddleName[i]}\n";
+                    genitiveRes += $"{genSurname[i]} {genName[i]} {genMiddleName[i]}\n";
                 }
 
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter("./GenitiveResult.txt",false, System.Text.Encoding.Default))
+                    {
+                        sw.Write(genitiveRes);
+                    }
 
+                    using (StreamWriter sw = new StreamWriter("./DativeResult.txt", false, System.Text.Encoding.Default))
+                    {
+                        sw.Write(dativeRes);
+                    }
+                }
+                catch { }
+
+                Console.WriteLine("Успіх! Файли з результатами створені.");
                 Console.ReadKey();
             }
         }
 
-        /// <summary>
-        /// Метод перетворення фамілії в родовий відмінок
-        /// </summary>
-        /// <param name="surnames"></param>
-        /// <returns></returns>
-        public static List<string> GenitiveSurname(List<string> sur)
-        {
-            List<string> surnames = new List<string>();
-            foreach (string elem in sur)
-            {
-                surnames.Add(elem);
-            }
-
-            for (int i = 0; i < surnames.Count; i++)
-            {
-                if (surnames[i].EndsWith("о") && sex[i].Equals("м"))
-                {
-                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
-                    surnames[i] += "а";
-                }
-                else if ((surnames[i].EndsWith("ов") || surnames[i].EndsWith("ів") ||
-                         surnames[i].EndsWith("ев") || surnames[i].EndsWith("єв") || surnames[i].EndsWith("їв") ||
-                         surnames[i].EndsWith("ин") || surnames[i].EndsWith("ін") ||
-                         surnames[i].EndsWith("їн")) && sex[i].Equals("м"))
-                {
-
-                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
-                    surnames[i] += "а";
-                }
-                else if (surnames[i].EndsWith("ий"))
-                {
-                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 2);
-                    surnames[i] += "ого";
-                }
-                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж"))
-                {
-                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
-                    surnames[i] += "ої";
-                }
-            }
-
-
-            return surnames;
-        }
+       
 
         /// <summary>
         /// Метод перетворення імені в родовий відмінок
@@ -122,7 +93,7 @@ namespace HelloApp // объявление нового пространства
         /// <returns></returns>
         public static List<string> GenitiveName(List<string> name)
         {
-            List<string> names = name;
+            List<string> names = new List<string>();
             foreach (string elem in name)
             {
                 names.Add(elem);
@@ -141,15 +112,13 @@ namespace HelloApp // объявление нового пространства
                             names[i] = names[i].Substring(0, names[i].Length - 1);
                             names[i] += ("о" + temp);
                         }
-                        names[i] = names[i].Substring(0, names[i].Length - 1);
-                        if (names[i].Equals("Ігор"))
+                        if (names[i].Equals("Ігор") || names[i].Equals("Лазар"))
                         {
                             names[i] += "я";
+                            continue;
                         }
-                        else
-                        {
-                            names[i] += "а";
-                        }
+                        names[i] += "а";
+                        
 
                     } else if (names[i].EndsWith("я"))
                     {
@@ -164,6 +133,14 @@ namespace HelloApp // объявление нового пространства
                     else if (names[i].EndsWith("о"))
                     {
                         names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "а";
+                    }
+                    else if (names[i].EndsWith("а"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "и";
+                    } else if (names[i].EndsWith("б"))
+                    {
                         names[i] += "а";
                     }
                     else
@@ -257,20 +234,54 @@ namespace HelloApp // объявление нового пространства
 
             for (int i = 0; i < surnames.Count; i++)
             {
-                if ((surnames[i].EndsWith("о") || surnames[i].EndsWith("ов") || surnames[i].EndsWith("ів") || surnames[i].EndsWith("ев") || surnames[i].EndsWith("єв") || surnames[i].EndsWith("їв") || surnames[i].EndsWith("ин") || surnames[i].EndsWith("ін") || surnames[i].EndsWith("їн")) && sex[i].Equals("м"))
+                if (surnames[i].EndsWith("о") && sex[i].Equals("м"))
                 {
                     surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
                     surnames[i] += "у";
+                }
+                else if ((surnames[i].EndsWith("ов") || surnames[i].EndsWith("ів") || surnames[i].EndsWith("ев") || surnames[i].EndsWith("єв") || surnames[i].EndsWith("їв") || surnames[i].EndsWith("ин") || surnames[i].EndsWith("ін") || surnames[i].EndsWith("їн")) && sex[i].Equals("м"))
+                {
+                    surnames[i] += "у";
+                }
+                else if (surnames[i].EndsWith("ень") && sex[i].Equals("м"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 3);
+                    surnames[i] += "ню";
+                }
+                else if ((surnames[i].EndsWith("ь") || surnames[i].EndsWith("й")) && sex[i].Equals("м"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "ю";
                 }
                 else if (surnames[i].EndsWith("ий"))
                 {
                     surnames[i] = surnames[i].Substring(0, surnames[i].Length - 2);
                     surnames[i] += "ому";
                 }
-                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж"))
+                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж") && surnames[i].Contains("сь"))
                 {
                     surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
                     surnames[i] += "ій";
+                }
+                else if (surnames[i].EndsWith("а") && sex[i].Equals("ж"))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1);
+                    surnames[i] += "і";
+                } else if (surnames[i].EndsWith("ка"))
+                {
+
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 2);
+                    surnames[i] += "ці";
+                } else if (sex[i].Equals("м") && (surnames[i].EndsWith("а") || surnames[i].EndsWith("я")))
+                {
+                    surnames[i] = surnames[i].Substring(0, surnames[i].Length - 1) + "і";
+                }
+                else
+                {
+                    if (sex[i].Equals("м"))
+                    {
+                        surnames[i] += "у";
+                    }
                 }
             }
 
@@ -317,7 +328,7 @@ namespace HelloApp // объявление нового пространства
         /// <returns></returns>
         public static List<string> DativeName(List<string> name)
         {
-            List<string> names = name;
+            List<string> names = new List<string>();
             foreach (string elem in name)
             {
                 names.Add(elem);
@@ -327,7 +338,11 @@ namespace HelloApp // объявление нового пространства
             {
                 if (sex[i].Equals("м"))
                 {
-                    if (names[i].EndsWith("я"))
+                    if (names[i].Equals("Ігор") || names[i].Equals("Лазар"))
+                    {
+                        names[i] += "ю";
+                    }
+                    else if (names[i].EndsWith("я"))
                     {
                         names[i] = names[i].Substring(0, names[i].Length - 1);
                         names[i] += "і";
@@ -342,6 +357,14 @@ namespace HelloApp // объявление нового пространства
                         names[i] = names[i].Substring(0, names[i].Length - 1);
                         names[i] += "у";
                     }
+                    else if (names[i].EndsWith("а"))
+                    {
+                        names[i] = names[i].Substring(0, names[i].Length - 1);
+                        names[i] += "і";
+                    } else if (names[i].EndsWith("б"))
+                    {
+                        names[i] += "у";
+                    }
                     else
                     {
                         if (names[i].Substring(0, names[i].Length - 1).EndsWith("і"))
@@ -350,7 +373,7 @@ namespace HelloApp // объявление нового пространства
                             names[i] = names[i].Substring(0, names[i].Length - 1);
                             names[i] += ("о"+temp);
                         }
-                        names[i] += "а";
+                        names[i] += "у";
                     }
 
 
